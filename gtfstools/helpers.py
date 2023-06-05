@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, TypeVar
+
+
+T = TypeVar('T')
 
 
 class RecordBase(ABC):
@@ -8,7 +11,7 @@ class RecordBase(ABC):
         pass
 
     @abstractmethod
-    def __lt__(self, other) -> bool:  # type: ignore
+    def __lt__(self: T, other: T) -> bool:
         pass
 
 
