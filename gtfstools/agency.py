@@ -4,7 +4,7 @@ from typing import Any, Dict
 from gtfstools.helpers import RecordBase, get_id
 
 
-@dataclass
+@dataclass(eq=False)
 class Agency(RecordBase):
     agency_id: int
     agency_name: str
@@ -19,5 +19,5 @@ class Agency(RecordBase):
         self.agency_url = values['agency_url']
         self.agency_timezone = values['agency_timezone']
 
-    def __lt__(self, other: 'Agency') -> bool:
-        return self.agency_id < other.agency_id
+    def primary(self) -> int:
+        return self.agency_id

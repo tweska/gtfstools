@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 from gtfstools.helpers import RecordBase, get_id, get_opt_id
 
 
-@dataclass
+@dataclass(eq=False)
 class Stop(RecordBase):
     stop_id: int
     stop_name: str
@@ -20,5 +20,5 @@ class Stop(RecordBase):
         self.stop_lat = float(values['stop_lat'])
         self.stop_lon = float(values['stop_lon'])
 
-    def __lt__(self, other: 'Stop') -> bool:
-        return self.stop_id < other.stop_id
+    def primary(self) -> int:
+        return self.stop_id
