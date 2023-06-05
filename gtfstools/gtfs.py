@@ -6,16 +6,19 @@ from zipfile import ZipFile
 
 from gtfstools.agency import Agency
 from gtfstools.helpers import RecordBase
+from gtfstools.stops import Stop
 
 
 GTFS_DATASET_MAPPINGS: List[Dict[str, Any]] = [
     {'filename': 'agency.txt', 'fieldname': 'agencies', 'class': Agency},
+    {'filename': 'stops.txt', 'fieldname': 'stops', 'class': Stop},
 ]
 
 
 @dataclass
 class GTFS:
     agencies: List[Agency]
+    stops: List[Stop]
 
 
 def read(path: str) -> GTFS:
