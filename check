@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "===================================== mypy ====================================="
+mypy --strict gtfstools
+
+echo -e "\n==================================== flake8 ===================================="
+flake8 gtfstools && echo "Success: checks passed successfully"
