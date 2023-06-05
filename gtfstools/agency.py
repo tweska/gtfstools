@@ -18,3 +18,6 @@ class Agency(RecordBase):
         self.agency_name = values['agency_name']
         self.agency_url = values['agency_url']
         self.agency_timezone = values['agency_timezone']
+
+    def __lt__(self, other: 'Agency') -> bool:
+        return self.agency_id < other.agency_id

@@ -45,5 +45,8 @@ def write(path: str, gtfs: GTFS) -> None:
                 fieldnames = [field.name for field in fields(mapping['class'])]
                 writer = DictWriter(data_file_wrapper, fieldnames=fieldnames)
                 writer.writeheader()
-                for record in getattr(gtfs, mapping['fieldname']):
+
+                records = getattr(gtfs, mapping['fieldname'])
+                records.sort()
+                for record in records:
                     writer.writerow(asdict(record))

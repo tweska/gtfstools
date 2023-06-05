@@ -19,3 +19,6 @@ class Stop(RecordBase):
         self.stop_name = values['stop_name']
         self.stop_lat = float(values['stop_lat'])
         self.stop_lon = float(values['stop_lon'])
+
+    def __lt__(self, other: 'Stop') -> bool:
+        return self.stop_id < other.stop_id
