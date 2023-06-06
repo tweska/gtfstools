@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
-from typing import Any, Dict, Optional, TypeVar
-
+from typing import Any, Dict, Optional, Tuple, TypeVar, Union
 
 T = TypeVar('T', bound='RecordBase')
 
@@ -18,14 +17,16 @@ class RecordBase(ABC):
         return hash(self.primary())
 
     def __lt__(self: T, other: T) -> bool:
-        return self.primary() < other.primary()
+        if type(self) != type(other):
+            raise TypeError(f"Type mismatch: {type(self)} and {type(other)}")
+        return self.primary() < other.primary()  # type: ignore
 
     def __eq__(self, other: Any) -> bool:
         return isinstance(other, type(self)) \
                and self.primary() == other.primary()
 
     @abstractmethod
-    def primary(self) -> int:
+    def primary(self) -> Union[int, Tuple[int, int]]:
         pass
 
     def asdict(self) -> Dict[str, Any]:
