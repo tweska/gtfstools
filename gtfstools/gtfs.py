@@ -1,5 +1,5 @@
 from csv import DictReader, DictWriter
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from io import TextIOWrapper
 from typing import Any, Dict, List
 from zipfile import ZipFile
@@ -27,8 +27,8 @@ class GTFS:
     agencies: List[Agency]
     stops: List[Stop]
     routes: List[Route]
-    services: List[Service]
-    service_changes: List[ServiceChange]
+    services: List[Service] = field(default_factory=list)
+    service_changes: List[ServiceChange] = field(default_factory=list)
 
 
 def read(path: str) -> GTFS:
@@ -36,6 +36,8 @@ def read(path: str) -> GTFS:
     gtfs_fields: Dict[str, List[RecordBase]] = {}
     with ZipFile(path, 'r') as gtfs_file:
         for mapping in GTFS_DATASET_MAPPINGS:
+            if mapping['filename'] not in gtfs_file.namelist():
+                continue
             data = []
             with gtfs_file.open(mapping['filename'], 'r') as data_file:
                 data_file_wrapper = TextIOWrapper(data_file, encoding='utf-8')
@@ -49,6 +51,9 @@ def read(path: str) -> GTFS:
 def write(path: str, gtfs: GTFS) -> None:
     with ZipFile(path, 'w') as gtfs_file:
         for mapping in GTFS_DATASET_MAPPINGS:
+            if len(getattr(gtfs, mapping['fieldname'])) == 0:
+                continue
+
             with gtfs_file.open(mapping['filename'], 'w') as data_file:
                 data_file_wrapper = TextIOWrapper(data_file, encoding='utf-8',
                                                   write_through=True)
