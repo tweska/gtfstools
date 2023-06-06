@@ -9,6 +9,7 @@ from gtfstools.calendar import Service
 from gtfstools.calendar_dates import ServiceChange
 from gtfstools.helpers import RecordBase
 from gtfstools.routes import Route
+from gtfstools.stop_times import StopTime
 from gtfstools.stops import Stop
 from gtfstools.trips import Trip
 
@@ -20,6 +21,8 @@ GTFS_DATASET_MAPPINGS: List[Dict[str, Any]] = [
     {'filename': 'calendar_dates.txt', 'fieldname': 'service_changes',
      'class': ServiceChange},
     {'filename': 'trips.txt', 'fieldname': 'trips', 'class': Trip},
+    {'filename': 'stop_times.txt', 'fieldname': 'stop_times',
+     'class': StopTime},
 ]
 
 
@@ -29,6 +32,7 @@ class GTFS:
     stops: List[Stop]
     routes: List[Route]
     trips: List[Trip]
+    stop_times: List[StopTime]
 
     services: List[Service] = field(default_factory=list)
     service_changes: List[ServiceChange] = field(default_factory=list)

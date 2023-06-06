@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
+from datetime import timedelta
 from typing import Any, Dict, Optional, Tuple, TypeVar, Union
 
 T = TypeVar('T', bound='RecordBase')
@@ -39,3 +40,19 @@ def get_id(id_map: Dict[str, int], original: str) -> int:
 
 def get_opt_id(id_map: Dict[str, int], original: str) -> Optional[int]:
     return None if original == '' else get_id(id_map, original)
+
+
+def str2timedelta(delta: str) -> Optional[timedelta]:
+    digits = [int(x) for x in delta.split(':')]
+    if len(digits) != 3:
+        return None
+    return timedelta(days=digits[0] // 24, hours=digits[0] % 24,
+                     minutes=digits[1], seconds=digits[2])
+
+
+def timedelta2str(delta: Optional[timedelta]) -> str:
+    if not delta:
+        return ''
+    seconds = int(delta.total_seconds())
+    return \
+        f'{seconds // 3600:02}:{(seconds % 3600) // 60:02}:{seconds % 60:02}'
