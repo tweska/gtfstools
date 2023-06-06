@@ -1,10 +1,11 @@
 from csv import DictReader, DictWriter
-from dataclasses import asdict, dataclass, fields
+from dataclasses import dataclass, fields
 from io import TextIOWrapper
 from typing import Any, Dict, List
 from zipfile import ZipFile
 
 from gtfstools.agency import Agency
+from gtfstools.calendar import Service
 from gtfstools.helpers import RecordBase
 from gtfstools.routes import Route
 from gtfstools.stops import Stop
@@ -14,6 +15,7 @@ GTFS_DATASET_MAPPINGS: List[Dict[str, Any]] = [
     {'filename': 'agency.txt', 'fieldname': 'agencies', 'class': Agency},
     {'filename': 'stops.txt', 'fieldname': 'stops', 'class': Stop},
     {'filename': 'routes.txt', 'fieldname': 'routes', 'class': Route},
+    {'filename': 'calendar.txt', 'fieldname': 'services', 'class': Service},
 ]
 
 
@@ -22,6 +24,7 @@ class GTFS:
     agencies: List[Agency]
     stops: List[Stop]
     routes: List[Route]
+    services: List[Service]
 
 
 def read(path: str) -> GTFS:
@@ -52,4 +55,4 @@ def write(path: str, gtfs: GTFS) -> None:
                 records = getattr(gtfs, mapping['fieldname'])
                 records.sort()
                 for record in records:
-                    writer.writerow(asdict(record))
+                    writer.writerow(record.asdict())

@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
+from dataclasses import asdict, dataclass
 from typing import Any, Dict, Optional, TypeVar
 
 
 T = TypeVar('T', bound='RecordBase')
 
+DATE_FORMAT = '%Y%m%d'
 
+
+@dataclass(eq=False)
 class RecordBase(ABC):
     @abstractmethod
     def __init__(self, values: Dict[str, str], context: Dict[str, Any]):
@@ -23,6 +27,9 @@ class RecordBase(ABC):
     @abstractmethod
     def primary(self) -> int:
         pass
+
+    def asdict(self) -> Dict[str, Any]:
+        return asdict(self)
 
 
 def get_id(id_map: Dict[str, int], original: str) -> int:
