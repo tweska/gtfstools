@@ -1,8 +1,8 @@
 from csv import DictReader, DictWriter
 from dataclasses import dataclass, field, fields
 from io import TextIOWrapper
-from typing import Any, Dict, List
-from zipfile import ZipFile
+from typing import Any, Dict, List, Optional
+from zipfile import ZIP_DEFLATED, ZipFile
 
 from gtfstools.agency import Agency
 from gtfstools.calendar import Service
@@ -55,8 +55,10 @@ def read(path: str) -> GTFS:
     return GTFS(**gtfs_fields)  # type: ignore
 
 
-def write(path: str, gtfs: GTFS) -> None:
-    with ZipFile(path, 'w') as gtfs_file:
+def write(path: str, gtfs: GTFS, compression: int = ZIP_DEFLATED,
+          compresslevel: Optional[int] = None) -> None:
+    with ZipFile(path, 'w', compression=compression,
+                 compresslevel=compresslevel) as gtfs_file:
         for mapping in GTFS_DATASET_MAPPINGS:
             if len(getattr(gtfs, mapping['fieldname'])) == 0:
                 continue
