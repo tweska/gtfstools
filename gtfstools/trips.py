@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, Tuple, Union
+from typing import Any, Dict
 
 from gtfstools.helpers import RecordBase, get_id
 
@@ -18,5 +18,5 @@ class Trip(RecordBase):
         self.route_id = route_id_map[values['route_id']]
         self.service_id = service_id_map[values['service_id']]
 
-    def primary(self) -> Union[int, Tuple[int, int]]:
+    def primary(self) -> int:
         return self.trip_id
