@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Use virtual environment
+source venv/bin/activate
+
+# Remove old data
+rm -rf dist
+
+# Build and upload the package
+python -m build
+python -m twine upload dist/*

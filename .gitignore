@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Package distribution
+dist/
+*.egg-info
+
 # Virtual environments
 env/
 venv/
